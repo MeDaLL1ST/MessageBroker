@@ -8,14 +8,14 @@ To subscribe to the key, you need to create a websocket connection to the endpoi
 
 ## Subscribing adding
 
-To send the key to the broker, you need to send an http request with JSON of the following type to the endpoint /add: {"key":"some_key","value":"some_value'","checksum":"some_checksum"}. In case of an incorrect checksum, there will be no notifications in any way. Checksum is obtained using the following formula: sha256(key + value + Authorization_token). Authorization_token is the same as for /subscribe.
+To send the key to the broker, you need to send an http request with JSON of the following type to the endpoint /add: {"key":"some_key","value":"some_value'"}. Authorization token is the same as for /subscribe.
 
 ## ENV
 
 Do not forget to create a .env file in the root of the application with the following contents:
 API_KEY=some_key
 WS_PORT=http_port
-PROM_PORT=prometheus_part
+PROM_PORT=prometheus_port
 
 ## Load balancing
 

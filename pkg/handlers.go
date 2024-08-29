@@ -19,6 +19,16 @@ var store = &Store{
 }
 
 func AddHandler(w http.ResponseWriter, r *http.Request) {
+	authHeader := r.Header.Get("Authorization")
+	if len(authHeader) == 0 {
+		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
+		return
+	}
+
+	if !validateToken(authHeader) {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 	go metrics.Incr()
 	var item Item
 	err := json.NewDecoder(r.Body).Decode(&item)
@@ -27,7 +37,7 @@ func AddHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	go store.RPush(item.Inhash, item.Key, item.Value)
+	go store.RPush(item.Key, item.Value)
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(item)

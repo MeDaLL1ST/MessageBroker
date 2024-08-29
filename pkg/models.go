@@ -3,9 +3,8 @@ package pkg
 import "sync"
 
 type Item struct {
-	Key    string `json:"key"`
-	Value  string `json:"value"`
-	Inhash string `json:"checksum"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 type SubscribeRequest struct {
@@ -42,14 +41,12 @@ func (s *Store) QClear(key string) {
 	s.Lock.Unlock()
 }
 
-func (s *Store) RPush(inhash string, key string, value string) {
-	if generateChecksum(inhash, key, value) {
-		s.Lock.Lock()
-		if updates, ok := s.Updates[key]; ok {
-			updates <- Update{Key: key, Value: value}
-		}
-		s.Lock.Unlock()
+func (s *Store) RPush(key string, value string) {
+	s.Lock.Lock()
+	if updates, ok := s.Updates[key]; ok {
+		updates <- Update{Key: key, Value: value}
 	}
+	s.Lock.Unlock()
 }
 
 func (s *Store) IncUses(key string) {
