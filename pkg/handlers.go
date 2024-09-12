@@ -14,7 +14,6 @@ import (
 var store = &Store{
 	Uses:    make(map[string]int),
 	Updates: make(map[string]chan Update),
-	Lock:    &sync.Mutex{},
 	RLock:   &sync.RWMutex{},
 }
 
