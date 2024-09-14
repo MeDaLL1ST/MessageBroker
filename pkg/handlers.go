@@ -55,9 +55,9 @@ func ListHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	go metrics.IncrInf()
-	// Получаем все ключи из мапы Uses
-	keys := make([]string, 0, len(store.Uses))
+	
 	store.RLock.RLock()
+ keys := make([]string, 0, len(store.Uses))
 	for k := range store.Uses {
 		keys = append(keys, k)
 	}
