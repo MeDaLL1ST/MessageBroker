@@ -171,15 +171,19 @@ func SubscribeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func subscribeToKey(ctx context.Context, conn *websocket.Conn, key string) {
+	store.RLock.Lock()
 	updates := store.GetUpdates(key)
 	store.IncUses(key)
+	store.RLock.Unlock()
 	for {
 		select {
 		case <-ctx.Done():
+			store.RLock.Lock()
 			store.DecUses(key)
 			if store.Uses[key] == 0 {
 				store.QClear(key)
 			}
+			store.RLock.Unlock()
 			return
 		case update := <-updates:
 			err := conn.WriteMessage(websocket.TextMessage, []byte(update.Value))

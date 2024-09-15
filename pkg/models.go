@@ -23,8 +23,8 @@ type Store struct {
 }
 
 func (s *Store) GetUpdates(key string) <-chan Update {
-	s.RLock.Lock()
-	defer s.RLock.Unlock()
+	//s.RLock.Lock()
+	//defer s.RLock.Unlock()
 
 	if _, ok := s.Updates[key]; !ok {
 		s.Uses[key] = 0
@@ -34,10 +34,10 @@ func (s *Store) GetUpdates(key string) <-chan Update {
 }
 
 func (s *Store) QClear(key string) {
-	s.RLock.Lock()
+	//s.RLock.Lock()
 	delete(s.Updates, key)
 	delete(s.Uses, key)
-	s.RLock.Unlock()
+	//s.RLock.Unlock()
 }
 
 func (s *Store) RPush(key string, value string) {
@@ -49,13 +49,13 @@ func (s *Store) RPush(key string, value string) {
 }
 
 func (s *Store) IncUses(key string) {
-	s.RLock.Lock()
+	//s.RLock.Lock()
 	s.Uses[key]++
-	s.RLock.Unlock()
+	//s.RLock.Unlock()
 }
 
 func (s *Store) DecUses(key string) {
-	s.RLock.Lock()
+	//s.RLock.Lock()
 	s.Uses[key]--
-	s.RLock.Unlock()
+	//s.RLock.Unlock()
 }
