@@ -36,7 +36,7 @@ func AddHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	go store.RPush(item.Key, item.Value)
+	store.RPush(item.Key, item.Value)
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(item)
@@ -57,7 +57,7 @@ func ListHandler(w http.ResponseWriter, r *http.Request) {
 	go metrics.IncrInf()
 	
 	store.RLock.RLock()
- keys := make([]string, 0, len(store.Uses))
+ 	keys := make([]string, 0, len(store.Uses))
 	for k := range store.Uses {
 		keys = append(keys, k)
 	}

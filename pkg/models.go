@@ -41,11 +41,11 @@ func (s *Store) QClear(key string) {
 }
 
 func (s *Store) RPush(key string, value string) {
-	s.RLock.Lock()
+	s.RLock.RLock()
 	if updates, ok := s.Updates[key]; ok {
 		updates <- Update{Key: key, Value: value}
 	}
-	s.RLock.Unlock()
+	s.RLock.RUnlock()
 }
 
 func (s *Store) IncUses(key string) {
