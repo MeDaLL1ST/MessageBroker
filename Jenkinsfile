@@ -11,7 +11,7 @@ pipeline {
                         RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./main .
                     """
 
-                    dockerBuild(image: 'Dockerfile.build', tag: 'build-image')
+                    sh "docker build -f Dockerfile.build -t build-image ."
 
                     archiveArtifacts artifacts: './main', fingerprint: true
                 }
